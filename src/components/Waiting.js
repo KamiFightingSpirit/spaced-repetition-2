@@ -27,11 +27,11 @@ function Waiting() {
   };
 
   const subcategories = [
-    { title: '1 Hour', items: waitingItems.filter((item) => item.intervalIndex === 0) },
-    { title: '24 Hours', items: waitingItems.filter((item) => item.intervalIndex === 1) },
-    { title: '3 Days', items: waitingItems.filter((item) => item.intervalIndex === 2) },
-    { title: '1 Week', items: waitingItems.filter((item) => item.intervalIndex === 3) },
-    { title: '1 Month', items: waitingItems.filter((item) => item.intervalIndex === 4) },
+    { title: '1 Hour', items: waitingItems.filter((item) => item.intervalIndex === 1) },
+    { title: '24 Hours', items: waitingItems.filter((item) => item.intervalIndex === 3) },
+    { title: '3 Days', items: waitingItems.filter((item) => item.intervalIndex === 5) },
+    { title: '1 Week', items: waitingItems.filter((item) => item.intervalIndex === 7) },
+    { title: '1 Month', items: waitingItems.filter((item) => item.intervalIndex === 9) },
   ];
 
   return (

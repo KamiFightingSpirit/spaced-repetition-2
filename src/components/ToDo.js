@@ -28,10 +28,10 @@ function ToDo() {
 
   const subcategories = [
     { title: '1 Hour', items: todoItems.filter((item) => item.intervalIndex === 0) },
-    { title: '24 Hours', items: todoItems.filter((item) => item.intervalIndex === 1) },
-    { title: '3 Days', items: todoItems.filter((item) => item.intervalIndex === 2) },
-    { title: '1 Week', items: todoItems.filter((item) => item.intervalIndex === 3) },
-    { title: '1 Month', items: todoItems.filter((item) => item.intervalIndex === 4) },
+    { title: '24 Hours', items: todoItems.filter((item) => item.intervalIndex === 2) },
+    { title: '3 Days', items: todoItems.filter((item) => item.intervalIndex === 4) },
+    { title: '1 Week', items: todoItems.filter((item) => item.intervalIndex === 6) },
+    { title: '1 Month', items: todoItems.filter((item) => item.intervalIndex === 8) },
   ];
 
   return (

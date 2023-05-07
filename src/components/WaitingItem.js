@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import './WaitingItem.css';
 
 function WaitingItem({ item, onDone }) {
   const [timeLeft, setTimeLeft] = useState('');
@@ -8,10 +7,16 @@ function WaitingItem({ item, onDone }) {
   useEffect(() => {
     const updateCountdown = () => {
       const now = Date.now();
-      const timeRemaining = item.dueDate - now;
-      const minutes = Math.floor(timeRemaining / 60000);
-      const seconds = Math.floor((timeRemaining % 60000) / 1000);
-      setTimeLeft(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+      const timeRemaining = (item.dueDate - now) / 1000; //in seconds
+      var d = Math.floor(timeRemaining / (3600*24));
+      var h = Math.floor(timeRemaining % (3600*24) / 3600);
+      var m = Math.floor(timeRemaining % 3600 / 60);
+      var s = Math.floor(timeRemaining % 60);
+      var dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
+      var hDisplay = h > 0 ? h + (h == 1 ? " hr, " : " hrs, ") : "";
+      var mDisplay = m > 0 ? m + (m == 1 ? " min, " : " mins ") : "";
+      var sDisplay = s > 0 && h < 1 && d < 1 ? s + (s == 1 ? " sec" : " secs") : "";
+      setTimeLeft(`${dDisplay + hDisplay + mDisplay + sDisplay}`);
     };
 
     if (item.status === 'waiting') {
@@ -33,7 +38,7 @@ function WaitingItem({ item, onDone }) {
           {item.status === 'waiting' && <span><strong>Time left: </strong> {timeLeft}</span>}
         </span>
         <span className="move-button">
-          <Button onClick={onDone} className="float-right">{item.status === 'todo' ? 'Done' : 'Move to ToDo'}</Button>
+          <Button onClick={onDone} className="float-right">{item.status === 'todo' ? 'Done' : 'Move to To Do'}</Button>
         </span>
       </div>
     </div>

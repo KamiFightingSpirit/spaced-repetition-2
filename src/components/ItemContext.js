@@ -5,7 +5,13 @@ export const ItemContext = createContext();
 export const ItemProvider = ({ children }) => {
   const [items, setItems] = useState([]);
 
-  const intervals = [360 * 10000, 24 * 60 * 1000, 3 * 24 * 60 * 1000, 7 * 24 * 60 * 1000, 30 * 24 * 60 * 1000]; // Time intervals in milliseconds
+  const intervals = [
+      360 * 10000, 360 * 10000,
+      24 * 360 * 10000, 24 * 360 * 10000,
+      3 * 24 * 360 * 10000, 3 * 24 * 360 * 10000,
+      7 * 24 * 360 * 10000, 7 * 24 * 360 * 10000,
+      30 * 24 * 360 * 10000, 30 * 24 * 360 * 10000
+    ]; // Time intervals in milliseconds
 
   const addItem = (url) => {
     setItems([
@@ -26,7 +32,8 @@ export const ItemProvider = ({ children }) => {
         const newDueDate = new Date(Date.now() + intervals[item.intervalIndex]);
         return {
           ...item,
-          status: 'waiting',
+          status: item.status === 'waiting' ? 'todo' : 'waiting',
+          intervalIndex: item.intervalIndex + 1,
           dueDate: newDueDate,
         };
       }
@@ -36,6 +43,7 @@ export const ItemProvider = ({ children }) => {
   };
 
   const moveToTodo = (itemId) => {
+    console.log("here")
     const updatedItems = items.map((item) => {
       if (item.id === itemId) {
         return {
