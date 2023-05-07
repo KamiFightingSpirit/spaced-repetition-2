@@ -1,53 +1,69 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 
 export const ItemContext = createContext();
 
 export const ItemProvider = ({ children }) => {
   const [items, setItems] = useState([]);
 
+  const intervals = [360 * 10000, 24 * 60 * 1000, 3 * 24 * 60 * 1000, 7 * 24 * 60 * 1000, 30 * 24 * 60 * 1000]; // Time intervals in milliseconds
+
   const addItem = (url) => {
-    setItems((prevItems) => [
-      ...prevItems,
+    setItems([
+      ...items,
       {
-        id: new Date().getTime(),
+        id: Date.now(),
         url,
-        title: url,
         status: 'todo',
-        timer: null,
+        intervalIndex: 0,
+        dueDate: null,
       },
     ]);
   };
 
-  const moveToWaiting = (id) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id
-          ? { ...item, status: 'waiting', timer: setTimeout(() => moveToTodo(id), 5000) }
-          : item
-      )
-    );
+  const moveToWaiting = (itemId) => {
+    const updatedItems = items.map((item) => {
+      if (item.id === itemId) {
+        const newDueDate = new Date(Date.now() + intervals[item.intervalIndex]);
+        return {
+          ...item,
+          status: 'waiting',
+          dueDate: newDueDate,
+        };
+      }
+      return item;
+    });
+    setItems(updatedItems);
   };
 
-  const moveToTodo = (id) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, status: 'todo', timer: null } : item
-      )
-    );
+  const moveToTodo = (itemId) => {
+    const updatedItems = items.map((item) => {
+      if (item.id === itemId) {
+        return {
+          ...item,
+          status: 'todo',
+          intervalIndex: item.intervalIndex + 1,
+          dueDate: null,
+        };
+      }
+      return item;
+    });
+    setItems(updatedItems);
   };
 
   useEffect(() => {
-    return () => {
+    const interval = setInterval(() => {
       items.forEach((item) => {
-        if (item.timer) {
-          clearTimeout(item.timer);
+        if (item.status === 'waiting' && item.dueDate <= Date.now()) {
+          moveToTodo(item.id);
         }
       });
-    };
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, [items]);
 
   return (
-    <ItemContext.Provider value={{ items, addItem, moveToWaiting, moveToTodo }}>
+    <ItemContext.Provider value={{ items, addItem, moveToWaiting }}>
       {children}
     </ItemContext.Provider>
   );

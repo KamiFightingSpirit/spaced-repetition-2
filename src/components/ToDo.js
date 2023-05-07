@@ -8,14 +8,12 @@ function ToDo() {
   const { items, moveToWaiting } = useContext(ItemContext);
   const todoItems = items.filter((item) => item.status === 'todo');
 
-  return (
-    <div className="ToDo">
-      <Card className="todo-card">
-        <Card.Header>
-          <h2>To Do</h2>
-        </Card.Header>
-        <ListGroup variant="flush">
-          {todoItems.map((item) => (
+  const renderSubcategory = (title, items) => {
+    return (
+      <div className="subcategory" key={title}>
+        <h3>{title}</h3>
+        <ListGroup>
+          {items.map((item) => (
             <ListGroup.Item key={item.id}>
               <WaitingItem
                 item={item}
@@ -24,6 +22,29 @@ function ToDo() {
             </ListGroup.Item>
           ))}
         </ListGroup>
+      </div>
+    );
+  };
+
+  const subcategories = [
+    { title: '1 Hour', items: todoItems.filter((item) => item.intervalIndex === 0) },
+    { title: '24 Hours', items: todoItems.filter((item) => item.intervalIndex === 1) },
+    { title: '3 Days', items: todoItems.filter((item) => item.intervalIndex === 2) },
+    { title: '1 Week', items: todoItems.filter((item) => item.intervalIndex === 3) },
+    { title: '1 Month', items: todoItems.filter((item) => item.intervalIndex === 4) },
+  ];
+
+  return (
+    <div className="ToDo">
+      <Card className="todo-card">
+        <Card.Header>
+          <h2>To Do</h2>
+        </Card.Header>
+        <Card.Body>
+          {subcategories.map((subcategory) => (
+            renderSubcategory(subcategory.title, subcategory.items)
+          ))}
+        </Card.Body>
       </Card>
     </div>
   );

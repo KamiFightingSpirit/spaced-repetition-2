@@ -1,9 +1,9 @@
-.Waiting {
-    margin-left: 10px;
-  }
-  
-  .waiting-card {
+.waiting-card {
     width: 100%;
     height: 100%;
+  }
+  
+  .subcategory {
+    margin-bottom: 20px;
   }
   
