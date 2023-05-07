@@ -1,24 +1,26 @@
-import logo from './logo.svg';
+import React from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import { ItemProvider } from './components/ItemContext';
+import EnterNewItem from './components/EnterNewItem';
+import ToDo from './components/ToDo';
+import Waiting from './components/Waiting';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ItemProvider>
+      <Container className="App">
+        <EnterNewItem />
+        <Row className="content">
+          <Col sm={12} md={6}>
+            <ToDo />
+          </Col>
+          <Col sm={12} md={6}>
+            <Waiting />
+          </Col>
+        </Row>
+      </Container>
+    </ItemProvider>
   );
 }
 
